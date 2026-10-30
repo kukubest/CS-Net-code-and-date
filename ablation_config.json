@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "paths": {
+    "dirty_train": "data/dirty/train",
+    "clean_train": "data/clean/train",
+    "dirty_val": "data/dirty/validation",
+    "clean_val": "data/clean/validation",
+    "dirty_independent_test": "data/dirty/independent_test",
+    "clean_independent_test": "data/clean/independent_test",
+    "output_root": "outputs/ablation"
+  },
+  "data": {
+    "volume_shape": [
+      40,
+      256,
+      256
+    ],
+    "padded_shape": [
+      64,
+      256,
+      256
+    ],
+    "z_pad": [
+      12,
+      12
+    ],
+    "dtype": "float32",
+    "expected_test_samples": 200,
+    "expected_raw_bytes": 10485760,
+    "train_augmentation": "none (matches existing project)"
+  },
+  "training": {
+    "epochs": 100,
+    "batch_size": 2,
+    "micro_batch_size": 1,
+    "gradient_accumulation_steps": 2,
+    "eval_batch_size": 1,
+    "num_workers": 2,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR",
+    "amp": true,
+    "deterministic": true,
+    "early_stopping_patience": 0,
+    "seed": 20260916
+  },
+  "model": {
+    "in_channels": 1,
+    "out_channels": 1,
+    "feature_size": 24,
+    "spatial_dims": 3,
+    "use_checkpoint": true
+  },
+  "evaluation": {
+    "clip_predictions": [
+      0.0,
+      1.0
+    ],
+    "warmup_runs": 50,
+    "timed_runs": 100,
+    "save_predictions": false,
+    "copper_metrics": {
+      "enabled": true,
+      "gt_rule": "exact material label: abs(GT - 1.0) <= 1e-6",
+      "prediction_threshold": 0.91,
+      "justification": "GT generator assigns copper=1.00 and the next-highest material, solder,=0.82; 0.91 is their midpoint."
+    }
+  },
+  "experiments": {
+    "swin_unetr_baseline": {
+      "id": "A",
+      "architecture": "swin_unetr_baseline",
+      "loss": "l1",
+      "description": "Original project Swin-UNETR baseline at padded input resolution."
+    },
+    "csnet_no_compression": {
+      "id": "B",
+      "architecture": "csnet_no_compression",
+      "loss": "l1",
+      "description": "CS-Net modules and channel configuration retained; compression and matching upsampling are bypassed, so the same 24-channel Swin backbone runs at full resolution.",
+      "adaptation": "The stride-2 downsample and stride-2 transpose-convolution modules remain registered for parameter parity with D but are bypassed in forward()."
+    },
+    "csnet_compressed_no_hr_skip": {
+      "id": "C",
+      "architecture": "csnet_compressed_no_hr_skip",
+      "loss": "l1",
+      "description": "Compressed CS-Net with HR fusion input removed; tail input channels are reduced from 48 to 24."
+    },
+    "csnet_l1": {
+      "id": "D",
+      "architecture": "csnet",
+      "loss": "l1",
+      "description": "Complete CS-Net with compression, latent Swin-UNETR, HR skip and fusion reconstruction."
+    },
+    "csnet_mse": {
+      "id": "E",
+      "architecture": "csnet",
+      "loss": "mse",
+      "description": "Architecturally identical to D; only the training and validation loss changes to MSE."
+    }
+  },
+  "public_release_notes": {
+    "data_not_included": true,
+    "volume_files_not_included": true,
+    "weights_not_included": true,
+    "path_policy": "Replace paths above with local dataset locations before running."
+  }
+}

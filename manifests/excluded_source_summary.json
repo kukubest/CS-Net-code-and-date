@@ -1,0 +1,17 @@
+{
+  "policy": "Forbidden files are excluded from the public package; no source file was deleted.",
+  "source_exclusions": {
+    "3D volume/prediction (.raw)": {
+      "count": 2200,
+      "bytes": 23068672000
+    },
+    "model weight/checkpoint (.pt)": {
+      "count": 23,
+      "bytes": 4328581236
+    },
+    "model weight/checkpoint (.pth)": {
+      "count": 5,
+      "bytes": 718100190
+    }
+  }
+}

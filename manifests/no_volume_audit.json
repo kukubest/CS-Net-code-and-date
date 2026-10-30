@@ -1,0 +1,10 @@
+{
+  "validated_at": "2026-10-30T02:54:12.855212+00:00",
+  "file_count": 269,
+  "total_bytes": 7536039,
+  "forbidden_file_count": 0,
+  "forbidden_files": [],
+  "files_at_or_above_100_mib_count": 0,
+  "files_at_or_above_100_mib": [],
+  "passed": true
+}

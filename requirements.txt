@@ -1,0 +1,12 @@
+# Recorded experiments used Python 3.11.15 and torch 2.5.1+cu121.
+# Install the correct CUDA build of PyTorch for your platform first.
+torch==2.5.1
+monai
+numpy
+scipy
+scikit-image
+matplotlib
+Pillow
+thop
+# Dataset simulation / SIRT3D_CUDA generation; conda installation is often preferred:
+astra-toolbox
